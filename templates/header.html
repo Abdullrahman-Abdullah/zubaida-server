@@ -1,0 +1,25 @@
+<header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-spa"></i>
+                <a href="/" style="color: white; text-decoration: none;">Zubaida Beauty</a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/">الرئيسية</a></li>
+                    <li><a href="/products" class="active">المنتجات</a></li>
+                    <li><a href="/about">عن الشركة</a></li>
+                    <li><a href="/contact">اتصل بنا</a></li>
+                    <li class="cart-icon">
+                        <a href="/cart"><i class="fas fa-shopping-cart"></i></a>
+                        <span class="cart-count">3</span>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <script>
+        const cart = JSON.parse(localStorage.getItem('zubaida_cart')) || [];
+
+        document.getElementsByClassName('cart-count')[0].innerText = cart.length || '0';
+    </script>

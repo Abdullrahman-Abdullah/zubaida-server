@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zubaida Beauty - منتجات تجميل طبيعية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* التكيف مع اللغة العربية */
+        body[dir="rtl"] {
+            text-align: right;
+        }
+        
+        /* الهيدر */
+        header {
+            background: linear-gradient(135deg, #6A5ACD 0%, #FFB6C1 100%);
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            
+            
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-left: 10px;
+            color: #4CAF50;
+        }
+        .logo p{
+            padding-left:5px;
+            position: relative;
+            border-bottom: 1px solid white;
+            border-left: 1px solid white;
+        }
+        .logo span{
+            font-size:.9rem;
+            position: absolute;
+            bottom:0;
+            right:20px;
+            transform: translateY(60%);
+            background: linear-gradient(135deg, #e1a3c3 0%, #e9a9c3 100%);
+            
+            
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* الهيرو section */
+        .hero {
+            background: linear-gradient(rgba(106, 90, 205, 0.7), rgba(255, 182, 193, 0.7)), url('https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #6A5ACD;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* الأقسام العامة */
+        .section {
+            padding: 4rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #6A5ACD;
+            font-size: 2.2rem;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, #FFB6C1, #6A5ACD, #4CAF50);
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+        
+        /* قسم المنتجات */
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .product-img {
+            height: 200px;
+            width: 100%;
+            background: linear-gradient(45deg, #FFB6C1, #6A5ACD);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        .product-img img {
+            width: 100%;
+            height: 90%;
+            object-fit:contain;
+            background-position: center;
+        }
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .product-desc {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .product-price {
+            font-weight: bold;
+            color: #6A5ACD;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* قسم الخدمات */
+        .services {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 3rem;
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .services::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #FFB6C1, #6A5ACD, #4CAF50);
+        }
+        
+        .service-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .service-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .service-item i {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #FFB6C1, #6A5ACD);
+            /* -webkit-background-clip: text; */
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        
+        /* الفوتر الجديد مع نقوش أدوات التجميل */
+        footer {
+            background: linear-gradient(rgba(106, 90, 205, 0.95), rgba(76, 175, 80, 0.95)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M20,30 Q30,20 40,30 T60,30 T80,30 T90,20" stroke="%23ffffff20" fill="none" stroke-width="2"/><circle cx="30" cy="50" r="5" fill="%23ffffff20"/><circle cx="50" cy="50" r="5" fill="%23ffffff20"/><circle cx="70" cy="50" r="5" fill="%23ffffff20"/><path d="M20,70 Q30,60 40,70 T60,70 T80,70 T90,60" stroke="%23ffffff20" fill="none" stroke-width="2"/></svg>');
+            color: white;
+            padding: 4rem 1rem 2rem;
+            margin-top: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #FFB6C1;
+            position: relative;
+            display: inline-block;
+            text-align:center;
+        }
+        
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            right: 0;
+            width: 50%;
+            height: 2px;
+            background-color: #FFB6C1;
+        }
+        
+        .footer-section p, .footer-section li {
+            margin-bottom: 0.8rem;
+            color: #f0f0f0;
+            
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section a {
+            color: #f0f0f0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            
+        }
+        
+        .footer-section a:hover {
+            color: #FFB6C1;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            transition: all 0.3s ease;
+            
+        }
+        
+        .social-links a:hover {
+            background: #FFB6C1;
+            transform: translateY(-5px);
+        }
+        
+        
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            margin-left:2px;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: #f0f0f0;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* تأثيرات الخلفية للفوتر */
+        .cosmetic-icon {
+            position: absolute;
+            opacity: 0.1;
+            z-index: 1;
+        }
+        
+        .icon-1 {
+            
+            top: 20%;
+            left: 10%;
+            font-size: 5rem;
+            transform: rotate(25deg);
+        }
+        
+        .icon-2 {
+            top: 40%;
+            right: 15%;
+            font-size: 4rem;
+            transform: rotate(-15deg);
+        }
+        
+        .icon-3 {
+            bottom: 20%;
+            left: 20%;
+            font-size: 6rem;
+            transform: rotate(10deg);
+        }
+        /* responsive design */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            header{
+                position:absolute;
+                width:100svw;
+            }
+            .hero {
+                margin-top: 7svh;
+            }
+            .logo span{
+                background: linear-gradient(135deg, #bc8dc4 0%, #dca0c4 100%);
+            }
+            #nav{
+                display:none;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            nav ul li {
+                margin: 5px;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .services {
+                padding: 2rem 1rem;
+            }
+            
+            .service-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .footer-section h3::after {
+                right: 50%;
+                transform: translateX(50%);
+                width: 30%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الهيدر -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <p>Zubaida-Beauty <span>From Reson</span></p>
+            </div>
+            <nav id="nav">
+                <ul>
+                    <li><a href="#home">الرئيسية</a></li>
+                    <li><a href="/products">المنتجات</a></li>
+                    <li><a href="/about">عن الشركة</a></li>
+                    <li><a href="/contact">اتصل بنا</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- الهيرو section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>جمالك الطبيعي هو بصمتنا</h1>
+            <p>منتجات تجميل طبيعية مصنوعة بعناية فائقة من أفضل المكونات الطبيعية لعناية متكاملة ببشرتك وشعرك</p>
+            <a href="/products" class="btn">استكشف المنتجات</a>
+        </div>
+    </section>
+
+    <!-- قسم المنتجات -->
+    <section class="section" id="products">
+    <h2 class="section-title">منتجاتنا المميزة</h2>
+    <div class="products">
+        
+        {% for product in products %}
+        <div class="product-card">
+            <div class="product-img">
+                {% if product.image_url %}
+                    <img src="{{ product.image_url }}" >
+                {% else %}
+                    <i class="fas fa-spa"></i>
+                {% endif %}
+            </div>
+            
+            <div class="product-info">
+                <h3 class="product-title">{{ product.name }}</h3>
+                <p class="product-desc">{{ product.description }}</p>
+                <div class="product-price">{{ "{:,.0f}".format(product.price) }} SYP</div>
+                
+                <!-- <button class="btn" data-id="{{ product.id }}" onclick="addToCart(this.getAttribute('data-id'))">اطلب الآن</button> -->
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</section>
+
+    <!-- قسم الخدمات -->
+    <section class="section">
+        <h2 class="section-title">لماذا تختار Zubaida Beauty؟</h2>
+        <div class="services">
+            <div class="service-list">
+                <div class="service-item">
+                    <i class="fas fa-leaf"></i>
+                    <h3>منتجات طبيعية 100%</h3>
+                    <p>جميع منتجاتنا مصنوعة من مكونات طبيعية خالية من المواد الكيميائية الضارة</p>
+                </div>
+                
+                <div class="service-item">
+                    <i class="fas fa-truck"></i>
+                    <h3>توصيل سريع</h3>
+                    <p>نقدم خدمة توصيل سريعة لجميع أنحاء سوريا خلال 2-5 أيام عمل</p>
+                </div>
+                
+                <div class="service-item">
+                    <i class="fas fa-gift"></i>
+                    <h3>عبوات صديقة للبيئة</h3>
+                    <p>نستخدم عبوات قابلة للتدوير للحفاظ على البيئة وتقليل البصمة الكربونية</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر الجديد مع نقوش أدوات التجميل -->
+    {% include 'footer.html' %}
+</body>
+<script>
+    function addToCart(productId) {
+        alert("تم إضافة المنتج إلى سلة التسوق! (معرف المنتج: " + productId + ")");
+    }
+</script>
+</html>

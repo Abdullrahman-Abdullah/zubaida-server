@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم زبيدة بيوتي الكاملة</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root { --primary: #6A5ACD; --secondary: #FFB6C1; --dark: #333; --bg: #f8f9fa; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { margin: 0; display: flex; background: var(--bg); color: var(--dark); }
+
+        /* القائمة الجانبية */
+        .sidebar { width: 260px; background: white; height: 100vh; position: sticky; top: 0; box-shadow: 2px 0 15px rgba(0,0,0,0.05); }
+        .sidebar-header { padding: 30px; text-align: center; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
+        .nav-item { padding: 15px 25px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: #555; transition: 0.3s; border-bottom: 1px solid #f9f9f9; }
+        .nav-item:hover, .nav-item.active { background: #f0edff; color: var(--primary); border-left: 5px solid var(--primary); }
+
+        /* المحتوى الرئيسي */
+        .main-content { flex: 1; padding: 30px; overflow-y: auto; }
+        .header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        
+        /* الجداول */
+        .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: right; border-bottom: 1px solid #eee; }
+        th { background: #fafafa; color: #666; }
+        
+        /* الأزرار */
+        .btn { padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; font-weight: bold; }
+        .btn-add { background: var(--primary); color: white; }
+        .btn-edit { color: #6A5ACD; background: #f0edff; }
+        .btn-delete { color: #ff4d4d; background: #fff0f0; }
+
+        /* النوافذ المنبثقة (Modals) */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
+        .modal-content { background: white; width: 500px; margin: 50px auto; padding: 25px; border-radius: 15px; position: relative; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 0.9rem; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
+        
+        /* حالات الطلب */
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; }
+        .status-new { background: #e3f2fd; color: #1976d2; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Zubaida Admin</h2>
+            <p>إدارة المتجر بالكامل</p>
+        </div>
+        <div class="nav-links">
+            <div class="nav-item active" onclick="loadTab('products')"><i class="fas fa-box"></i> المنتجات</div>
+            <div class="nav-item" onclick="loadTab('orders')"><i class="fas fa-shopping-cart"></i> الطلبات</div>
+            <div class="nav-item" onclick="loadTab('messages')"><i class="fas fa-envelope"></i> الرسائل</div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header-actions">
+            <h1 id="tab-title">إدارة المنتجات</h1>
+            <button id="add-btn" class="btn btn-add" onclick="openModal()">
+                <i class="fas fa-plus"></i> إضافة منتج جديد
+            </button>
+        </div>
+
+        <div class="card">
+            <table>
+                <thead id="table-head"></thead>
+                <tbody id="table-body">
+                    <tr><td colspan="5" style="text-align:center">جاري تحميل البيانات...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-title">إضافة منتج جديد</h3>
+            <input type="hidden" id="p-id">
+            <div class="form-group">
+                <label>اسم المنتج</label>
+                <input type="text" id="p-name">
+            </div>
+            <div class="form-group">
+                <label>الفئة</label>
+                <select id="p-category">
+                    <option>صابون طبيعي</option>
+                    <option>زيوت</option>
+                    <option>كريمات وبشرة</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>السعر (SYP)</label>
+                <input type="number" id="p-price">
+            </div>
+            <div class="form-group">
+                <label>رابط الصورة</label>
+                <input type="text" id="p-image">
+            </div>
+            <div class="form-group">
+                <label>الوصف</label>
+                <textarea id="p-desc" rows="3"></textarea>
+            </div>
+            <div style="display:flex; gap:10px; justify-content:flex-end">
+                <button class="btn btn-add" onclick="saveProduct()">حفظ</button>
+                <button class="btn" onclick="closeModal()">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. إعداد الاتصال بسوبابيس
+        const SUPABASE_URL = "https://fdrdnejujpuffdazxdmd.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_CpkFdoxIUmNmvj8pd_Wldw_oOUuQkXs"; // استبدله بمفتاح Anon الخاص بك
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let currentTab = 'products';
+
+        // 2. دالة تبديل الأقسام
+        async function loadTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            event.currentTarget?.classList.add('active');
+            
+            const tbody = document.getElementById('table-body');
+            const thead = document.getElementById('table-head');
+            const addBtn = document.getElementById('add-btn');
+
+            if (tab === 'products') {
+                document.getElementById('tab-title').innerText = "إدارة المنتجات";
+                addBtn.style.display = "block";
+                thead.innerHTML = `<tr><th>الصورة</th><th>الاسم</th><th>الفئة</th><th>السعر</th><th>إجراءات</th></tr>`;
+                
+                const { data } = await _supabase.from('products').select('*').order('created_at', {ascending: false});
+                tbody.innerHTML = data.map(p => `
+                    <tr>
+                        <td><img src="${p.image_url}" width="40" style="border-radius:4px"></td>
+                        <td>${p.name}</td>
+                        <td>${p.category}</td>
+                        <td>${p.price.toLocaleString()} SYP</td>
+                        <td>
+                            <button class="btn btn-edit" onclick="editProduct('${p.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-delete" onclick="deleteItem('products', '${p.id}')"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+            } 
+            
+            else if (tab === 'orders') {
+                document.getElementById('tab-title').innerText = "طلبات الزبائن";
+                addBtn.style.display = "none";
+                thead.innerHTML = `<tr><th>العميل</th><th>الهاتف</th><th>المبلغ</th><th>الحالة</th><th>إجراءات</th></tr>`;
+                
+                const { data } = await _supabase.from('orders').select('*').order('created_at', {ascending: false});
+                tbody.innerHTML = data.map(o => `
+                    <tr>
+                        <td>${o.customer_name}</td>
+                        <td>${o.phone}</td>
+                        <td>${o.total_price.toLocaleString()} SYP</td>
+                        <td><span class="badge status-new">${o.status}</span></td>
+                        <td><button class="btn btn-edit" onclick="changeStatus('${o.id}')">تحديث الحالة</button></td>
+                    </tr>
+                `).join('');
+            }
+
+            else if (tab === 'messages') {
+                document.getElementById('tab-title').innerText = "رسائل تواصل معنا";
+                addBtn.style.display = "none";
+                thead.innerHTML = `<tr><th>المرسل</th><th>الموضوع</th><th>الرسالة</th><th>إجراءات</th></tr>`;
+                
+                const { data } = await _supabase.from('contact_messages').select('*').order('created_at', {ascending: false});
+                tbody.innerHTML = data.map(m => `
+                    <tr>
+                        <td>${m.name} <br> <small>${m.email}</small></td>
+                        <td>${m.subject}</td>
+                        <td>${m.message}</td>
+                        <td><button class="btn btn-delete" onclick="deleteItem('contact_messages', '${m.id}')"><i class="fas fa-trash"></i></button></td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        // 3. وظائف المنتجات (إضافة / تعديل / حذف)
+        function openModal() {
+            document.getElementById('productModal').style.display = 'block';
+            document.getElementById('modal-title').innerText = "إضافة منتج جديد";
+            document.getElementById('p-id').value = "";
+        }
+
+        function closeModal() { document.getElementById('productModal').style.display = 'none'; }
+
+        async function saveProduct() {
+            const id = document.getElementById('p-id').value;
+            const productData = {
+                name: document.getElementById('p-name').value,
+                price: document.getElementById('p-price').value,
+                category: document.getElementById('p-category').value,
+                image_url: document.getElementById('p-image').value,
+                description: document.getElementById('p-desc').value
+            };
+
+            if (id) { // تعديل
+                await _supabase.from('products').update(productData).eq('id', id);
+            } else { // إضافة
+                await _supabase.from('products').insert([productData]);
+            }
+            
+            closeModal();
+            loadTab('products');
+        }
+
+        async function deleteItem(table, id) {
+            if(confirm('هل أنت متأكد من الحذف؟')) {
+                await _supabase.from(table).delete().eq('id', id);
+                loadTab(currentTab);
+            }
+        }
+
+        async function editProduct(id) {
+            const { data } = await _supabase.from('products').select('*').eq('id', id).single();
+            document.getElementById('p-id').value = data.id;
+            document.getElementById('p-name').value = data.name;
+            document.getElementById('p-price').value = data.price;
+            document.getElementById('p-image').value = data.image_url;
+            document.getElementById('p-desc').value = data.description;
+            document.getElementById('modal-title').innerText = "تعديل المنتج";
+            document.getElementById('productModal').style.display = 'block';
+        }
+
+        // تشغيل افتراضي
+        window.onload = () => loadTab('products');
+    </script>
+</body>
+</html>

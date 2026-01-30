@@ -1,0 +1,46 @@
+<footer id="contact">
+    <i class="cosmetic-icon icon-1 fas fa-paint-brush"></i>
+    <i class="cosmetic-icon icon-2 fas fa-spa"></i>
+    <i class="cosmetic-icon icon-3 fas fa-palette"></i>
+    
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>Zubaida Beauty</h3>
+            <p>متخصصون في صناعة منتجات التجميل الطبيعية للشعر والبشرة والصابون الطبيعي بجودة فائقة.</p>
+            <div class="social-links">
+                {% for social in socials %}
+                <a href="{{ social.account_link }}"><i class="{{ social.icon_class }}"></i></a>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="footer-section">
+            <h3>روابط سريعة</h3>
+            <ul>
+                <li><a href="/">الرئيسية</a></li>
+                <li><a href="/products">المنتجات</a></li>
+                <li><a href="/about">عن الشركة</a></li>
+                <li><a href="/contact">اتصل بنا</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-section">
+            <h3>معلومات الاتصال</h3>
+            <p><i class="fas fa-map-marker-alt"></i> ريف دمشق - سوريا</p>
+            <p><i class="fas fa-phone"></i> +963 981 082 693</p>
+            <p><i class="fas fa-envelope"></i> info@zubaida-beauty.com</p>
+            
+            {% if hours %}
+                <div style="margin-top:10px; font-size: 0.9em; opacity: 0.8;">
+                    {% for h in hours %}
+                    <p><i class="fas fa-clock"></i> {{ h.day_range }}: {{ h.hours_text }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="copyright">
+        <p>&copy; 2026 Zubaida Beauty. جميع الحقوق محفوظة</p>
+    </div>
+</footer>
