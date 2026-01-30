@@ -10,7 +10,8 @@ from cachetools import TTLCache
 app = FastAPI()
 
 # --- الإعدادات ---
-
+if os.path.exists("static"):
+    app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 # بيانات Supabase
